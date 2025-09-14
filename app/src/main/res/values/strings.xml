@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">PPD-P01</string>
+    <string name="login_title">Acesse sua conta</string>
+    <string name="email">Email</string>
+    <string name="password">Senha</string>
+    <string name="forgot_pass">Esqueceu a senha?</string>
+    <string name="login_button">Acessar</string>
+    <string name="sign_up_button">Criar conta</string>
+</resources>
