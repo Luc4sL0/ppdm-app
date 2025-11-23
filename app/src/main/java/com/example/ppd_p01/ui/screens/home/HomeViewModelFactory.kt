@@ -6,13 +6,14 @@ import com.example.ppd_p01.domain.repository.HabitRepository
 import com.example.ppd_p01.domain.repository.UserRepository
 
 class HomeViewModelFactory(
-    private val repository: HabitRepository
+    private val repository: HabitRepository,
+    private val userId: Int
 ) : ViewModelProvider.Factory {
-
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-            return HomeViewModel(repository) as T
+            @Suppress("UNCHECKED_CAST")
+            return HomeViewModel(repository, userId) as T
         }
-        throw IllegalArgumentException("ViewModel desconhecido")
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

@@ -8,10 +8,11 @@ import com.example.ppd_p01.domain.repository.HabitRepository
 
 class HabitRepositoryImpl(private val dao: HabitDao) : HabitRepository {
 
-    override suspend fun getHabits(): List<Habit> {
-        return dao.getAll().map {
+    override suspend fun getHabits(userId: Int): List<Habit> {
+        return dao.getAllByUser(userId).map {
             Habit(
                 id = it.id,
+                userId = it.userId,
                 title = it.title,
                 time = it.time,
                 recurrence = it.recurrence,
@@ -23,6 +24,7 @@ class HabitRepositoryImpl(private val dao: HabitDao) : HabitRepository {
     override suspend fun addHabit(habit: Habit) {
         dao.insert(
             HabitEntity(
+                userId = habit.userId,
                 title = habit.title,
                 time = habit.time,
                 recurrence = habit.recurrence,

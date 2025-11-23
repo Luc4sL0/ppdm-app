@@ -7,28 +7,36 @@ import androidx.lifecycle.viewModelScope
 import com.example.ppd_p01.domain.model.Habit
 import com.example.ppd_p01.domain.repository.HabitRepository
 import kotlinx.coroutines.launch
-
 class HomeViewModel(
-    private val repository: HabitRepository
+    private val repository: HabitRepository,
+    private val userId: Int
 ) : ViewModel() {
 
     var uiState by mutableStateOf<HabitState>(HabitState.Loading)
         private set
 
+    init {
+        loadHabits()
+    }
+
     fun loadHabits() {
         viewModelScope.launch {
-            val habits = repository.getHabits()
-            uiState = if (habits.isNotEmpty()) {
-                HabitState.Success(habits)
-            } else {
-                HabitState.Empty
+            try {
+                val habits = repository.getHabits(userId)
+                uiState = if (habits.isNotEmpty()) {
+                    HabitState.Success(habits)
+                } else {
+                    HabitState.Empty
+                }
+            } catch (e: Exception) {
+                uiState = HabitState.Error(e.message ?: "Erro desconhecido")
             }
         }
     }
 
     fun addHabit(habit: Habit) {
         viewModelScope.launch {
-            repository.addHabit(habit)
+            repository.addHabit(habit.copy(userId = userId))
             loadHabits()
         }
     }
@@ -40,6 +48,7 @@ class HomeViewModel(
         }
     }
 }
+
 
 sealed class HabitState {
     object Loading : HabitState()

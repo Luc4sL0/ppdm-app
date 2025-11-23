@@ -8,12 +8,13 @@ import androidx.room.RoomDatabase
 @Database(
     entities = [UserEntity::class, HabitEntity::class],
     version = 2,
-    exportSchema = false
+    exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
     abstract fun habitDao(): HabitDao
+
 
     companion object {
         @Volatile
@@ -26,7 +27,6 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "ppd_database"
                 )
-                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance

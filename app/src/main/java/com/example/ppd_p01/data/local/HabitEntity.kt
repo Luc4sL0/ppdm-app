@@ -7,8 +7,10 @@ import androidx.room.PrimaryKey
 data class HabitEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    val userId: Int,
     val title: String,
-    val time: String, // formato "HH:mm"
-    val recurrence: String, // exemplo: "Seg, Ter, Qua"
-    val status: String // "UPCOMING", "PENDING", "COMPLETED"
+    val time: String,
+    val recurrence: String,
+    val status: String
 )
+

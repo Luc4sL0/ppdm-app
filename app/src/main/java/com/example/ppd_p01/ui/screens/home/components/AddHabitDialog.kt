@@ -14,7 +14,8 @@ import com.example.ppd_p01.domain.model.HabitStatus
 @Composable
 fun AddHabitDialog(
     onDismiss: () -> Unit,
-    onConfirm: (Habit) -> Unit
+    onConfirm: (Habit) -> Unit,
+    userId: Int
 ) {
     var title by remember { mutableStateOf("") }
     var time by remember { mutableStateOf("") }
@@ -32,6 +33,7 @@ fun AddHabitDialog(
                             title = title,
                             time = time,
                             recurrence = recurrence,
+                            userId = userId,
                             status = status
                         )
                     )

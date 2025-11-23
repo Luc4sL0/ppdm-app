@@ -11,4 +11,9 @@
     <color name="green_primary">#4CAF50</color>
     <color name="yellow_secondary">#FFC107</color>
     <color name="gray_background">#F5F5F5</color>
+
+    <color name="habit_completed">#e4eee4</color>
+    <color name="habit_pending">#f0dcdc</color>
+    <color name="habit_upcoming">#f1ecdc</color>
+
 </resources>

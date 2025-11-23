@@ -26,12 +26,14 @@ import com.example.ppd_p01.ui.screens.home.components.HabitSection
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, userId: Int) {
     val context = LocalContext.current
     val db = AppDatabase.getDatabase(context)
     val dao = db.habitDao()
     val repository: HabitRepository = HabitRepositoryImpl(dao)
-    val viewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory(repository))
+    val viewModel: HomeViewModel = viewModel(
+        factory = HomeViewModelFactory(repository, userId)
+    )
     val uiState = viewModel.uiState
 
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -42,9 +44,12 @@ fun HomeScreen(navController: NavController) {
             onDismiss = { showDialog = false },
             onConfirm = { habit ->
                 viewModel.addHabit(habit)
-            }
+            },
+            userId
         )
     }
+
+
 
     ModalNavigationDrawer(
         drawerState = drawerState,
