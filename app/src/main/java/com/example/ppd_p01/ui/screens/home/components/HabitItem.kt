@@ -26,7 +26,7 @@ import com.example.ppd_p01.R
 @Composable
 fun HabitItem(
     habit: Habit,
-    onStatusChange: (HabitStatus) -> Unit
+    onStatusChange: (HabitStatus) -> Unit = {}
 ) {
     var showModal by remember { mutableStateOf(false) }
 

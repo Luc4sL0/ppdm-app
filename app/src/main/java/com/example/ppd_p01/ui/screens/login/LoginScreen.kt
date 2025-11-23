@@ -36,6 +36,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.unit.dp
 import com.example.ppd_p01.R
+import com.example.ppd_p01.UserPreferences
 import com.example.ppd_p01.data.repository.UserRepositoryImpl
 import com.example.ppd_p01.domain.repository.UserRepository
 
@@ -63,6 +64,7 @@ fun LoginScreen(
                 Toast.LENGTH_SHORT
             ).show()
         }else if (uiState is LoginState.Success){
+            UserPreferences.saveUserEmail(context, email)
             onSuccessLogin()
         }
     }

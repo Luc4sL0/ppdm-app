@@ -27,7 +27,7 @@ fun AppDrawer(
         Spacer(modifier = Modifier.height(80.dp))
 
         DrawerItem(label = "Início", onClick = { onNavigate(Routes.HOME); onCloseDrawer() })
-        DrawerItem(label = "Perfil", onClick = { onCloseDrawer() })
+        DrawerItem(label = "Perfil", onClick = { onNavigate(Routes.PERFIL);onCloseDrawer() })
     }
 }
 
