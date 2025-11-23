@@ -5,6 +5,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ppd_p01.domain.model.Habit
+import com.example.ppd_p01.domain.model.HabitStatus
 import com.example.ppd_p01.domain.repository.HabitRepository
 import kotlinx.coroutines.launch
 class HomeViewModel(
@@ -41,9 +42,9 @@ class HomeViewModel(
         }
     }
 
-    fun markHabitCompleted(habitId: Int) {
+    fun updateHabitStatus(habitId: Int, newStatus: HabitStatus) {
         viewModelScope.launch {
-            repository.markCompleted(habitId)
+            repository.updateStatus(habitId, newStatus)
             loadHabits()
         }
     }

@@ -3,7 +3,6 @@ package com.example.ppd_p01.data.local
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
 
 @Dao
 interface HabitDao {

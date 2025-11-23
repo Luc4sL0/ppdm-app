@@ -113,19 +113,37 @@ fun HomeScreen(navController: NavController, userId: Int) {
 
                             val upcoming = habits.filter { it.status == HabitStatus.UPCOMING }
                             if (upcoming.isNotEmpty()) {
-                                HabitSection("Em breve", upcoming)
+                                HabitSection(
+                                    title = "Em breve",
+                                    habits = upcoming,
+                                    onStatusChange = { habit, newStatus ->
+                                        viewModel.updateHabitStatus(habit.id, newStatus)
+                                    }
+                                )
                                 Spacer(Modifier.height(16.dp))
                             }
 
                             val pending = habits.filter { it.status == HabitStatus.PENDING }
                             if (pending.isNotEmpty()) {
-                                HabitSection("Pendentes", pending)
+                                HabitSection(
+                                    title = "Pendentes",
+                                    habits = pending,
+                                    onStatusChange = { habit, newStatus ->
+                                        viewModel.updateHabitStatus(habit.id, newStatus)
+                                    }
+                                )
                                 Spacer(Modifier.height(16.dp))
                             }
 
                             val completed = habits.filter { it.status == HabitStatus.COMPLETED }
                             if (completed.isNotEmpty()) {
-                                HabitSection("Concluídos", completed)
+                                HabitSection(
+                                    title = "Concluídos",
+                                    habits = completed,
+                                    onStatusChange = { habit, newStatus ->
+                                        viewModel.updateHabitStatus(habit.id, newStatus)
+                                    }
+                                )
                                 Spacer(Modifier.height(16.dp))
                             }
                         }

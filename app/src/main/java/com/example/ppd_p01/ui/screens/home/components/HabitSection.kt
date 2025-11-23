@@ -9,17 +9,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.ppd_p01.domain.model.Habit
+import com.example.ppd_p01.domain.model.HabitStatus
 
 @Composable
-fun HabitSection(title: String, habits: List<Habit>) {
+fun HabitSection(
+    title: String,
+    habits: List<Habit>,
+    onStatusChange: (Habit, HabitStatus) -> Unit
+) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = title,
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(vertical = 8.dp)
         )
+
         habits.forEach { habit ->
-            HabitItem(habit)
+            HabitItem(
+                habit = habit,
+                onStatusChange = { newStatus ->
+                    onStatusChange(habit, newStatus)
+                }
+            )
         }
     }
 }

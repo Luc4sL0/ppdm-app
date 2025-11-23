@@ -33,7 +33,8 @@ class HabitRepositoryImpl(private val dao: HabitDao) : HabitRepository {
         )
     }
 
-    override suspend fun markCompleted(habitId: Int) {
-        dao.updateStatus(habitId, HabitStatus.COMPLETED.name)
+    override suspend fun updateStatus(habitId: Int, newStatus: HabitStatus) {
+        dao.updateStatus(habitId, newStatus.name)
     }
+
 }
