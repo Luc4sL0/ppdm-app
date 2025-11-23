@@ -14,13 +14,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -38,11 +36,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ppd_p01.R
-import com.example.ppd_p01.data.local.AppDatabase
 import com.example.ppd_p01.data.repository.UserRepositoryImpl
 import com.example.ppd_p01.domain.repository.UserRepository
-import com.example.ppd_p01.ui.screens.login.LoginViewModel
-import com.example.ppd_p01.ui.screens.login.LoginViewModelFactory
 
 @Composable
 fun SignUpScreen(
@@ -52,10 +47,8 @@ fun SignUpScreen(
     var password by remember { mutableStateOf("") }
 
     val context = LocalContext.current
-    val db = AppDatabase.getDatabase(context)
-    val dao = db.userDao()
 
-    val repository: UserRepository = UserRepositoryImpl(dao)
+    val repository: UserRepository = UserRepositoryImpl()
 
     val viewModel: SignUpViewModel = viewModel(
         factory = SignUpViewModelFactory(repository)
@@ -66,6 +59,7 @@ fun SignUpScreen(
     LaunchedEffect(state) {
         if (state is RegisterState.Success) {
             Toast.makeText(context, "Cadastro realizado!", Toast.LENGTH_SHORT).show()
+            onBackClick()
         }
     }
     Surface(modifier = Modifier.fillMaxSize()) {

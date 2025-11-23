@@ -19,7 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,7 +36,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.unit.dp
 import com.example.ppd_p01.R
-import com.example.ppd_p01.data.local.AppDatabase
 import com.example.ppd_p01.data.repository.UserRepositoryImpl
 import com.example.ppd_p01.domain.repository.UserRepository
 
@@ -50,10 +48,8 @@ fun LoginScreen(
     var password by remember { mutableStateOf("") }
 
     val context = LocalContext.current
-    val db = AppDatabase.getDatabase(context)
-    val dao = db.userDao()
 
-    val repository: UserRepository = UserRepositoryImpl(dao)
+    val repository: UserRepository = UserRepositoryImpl()
 
     val viewModel: LoginViewModel = viewModel(
         factory = LoginViewModelFactory(repository)

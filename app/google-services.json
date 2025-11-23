@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "817368826372",
+    "project_id": "programacao-mobile-93ab3",
+    "storage_bucket": "programacao-mobile-93ab3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817368826372:android:3e933d6e6df60c93cfab51",
+        "android_client_info": {
+          "package_name": "com.example.ppd_p01"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNVQxTaHmZ8DlefWKRy_zfRuj-DRF2yVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

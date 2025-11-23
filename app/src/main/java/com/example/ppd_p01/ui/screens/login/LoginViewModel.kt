@@ -16,14 +16,37 @@ class LoginViewModel(
         private set
 
     fun login(email: String, password: String) {
+
+        if (email.isBlank() || password.isBlank()) {
+            uiState = LoginState.Error("Preencha email e senha")
+            return
+        }
+
         viewModelScope.launch {
             uiState = LoginState.Loading
-            val user = repository.login(email, password)
 
-            uiState = if (user != null) {
-                LoginState.Success
-            } else {
-                LoginState.Error("Usuário ou senha inválidos")
+            try {
+                val user = repository.login(email, password)
+
+                uiState = if (user != null) {
+                    LoginState.Success
+                } else {
+                    LoginState.Error("Usuário não encontrado")
+                }
+
+            } catch (e: Exception) {
+                uiState = LoginState.Error(
+                    when {
+                        e.message?.contains("password") == true ->
+                            "Senha incorreta"
+                        e.message?.contains("no user record") == true ->
+                            "Usuário não existe"
+                        e.message?.contains("email address is badly formatted") == true ->
+                            "Email inválido"
+                        else ->
+                            "Erro ao fazer login"
+                    }
+                )
             }
         }
     }
