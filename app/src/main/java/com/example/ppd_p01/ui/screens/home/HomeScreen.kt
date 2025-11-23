@@ -110,13 +110,27 @@ fun HomeScreen(navController: NavController, userId: Int) {
                         is HabitState.Error -> Text("Erro: ${uiState.message}", color = MaterialTheme.colorScheme.error)
                         is HabitState.Success -> {
                             val habits = uiState.habits
-                            HabitSection("Em breve", habits.filter { it.status == HabitStatus.UPCOMING })
-                            Spacer(Modifier.height(16.dp))
-                            HabitSection("Pendentes", habits.filter { it.status == HabitStatus.PENDING })
-                            Spacer(Modifier.height(16.dp))
-                            HabitSection("Concluídos", habits.filter { it.status == HabitStatus.COMPLETED })
+
+                            val upcoming = habits.filter { it.status == HabitStatus.UPCOMING }
+                            if (upcoming.isNotEmpty()) {
+                                HabitSection("Em breve", upcoming)
+                                Spacer(Modifier.height(16.dp))
+                            }
+
+                            val pending = habits.filter { it.status == HabitStatus.PENDING }
+                            if (pending.isNotEmpty()) {
+                                HabitSection("Pendentes", pending)
+                                Spacer(Modifier.height(16.dp))
+                            }
+
+                            val completed = habits.filter { it.status == HabitStatus.COMPLETED }
+                            if (completed.isNotEmpty()) {
+                                HabitSection("Concluídos", completed)
+                                Spacer(Modifier.height(16.dp))
+                            }
                         }
                     }
+
                 }
             }
         }
