@@ -45,7 +45,6 @@ import com.example.ppd_p01.domain.repository.UserRepository
 fun LoginScreen(
     onSuccessLogin: () -> Unit = {},
     onCreateAccountClick: () -> Unit = {},
-    onForgotPasswordClick: () -> Unit = {}
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }

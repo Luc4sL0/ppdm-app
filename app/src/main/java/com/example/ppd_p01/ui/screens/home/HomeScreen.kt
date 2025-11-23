@@ -1,24 +1,119 @@
 package com.example.ppd_p01.ui.screens.home
 
-import androidx.compose.foundation.layout.padding
+import com.example.ppd_p01.R
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.example.ppd_p01.data.local.AppDatabase
+import com.example.ppd_p01.data.repository.HabitRepositoryImpl
+import com.example.ppd_p01.domain.model.HabitStatus
+import com.example.ppd_p01.domain.repository.HabitRepository
+import com.example.ppd_p01.ui.components.AppDrawer
+import com.example.ppd_p01.ui.components.AppHeader
+import com.example.ppd_p01.ui.screens.home.components.AddHabitDialog
+import com.example.ppd_p01.ui.screens.home.components.HabitSection
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("Home") }
+fun HomeScreen(navController: NavController) {
+    val context = LocalContext.current
+    val db = AppDatabase.getDatabase(context)
+    val dao = db.habitDao()
+    val repository: HabitRepository = HabitRepositoryImpl(dao)
+    val viewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory(repository))
+    val uiState = viewModel.uiState
+
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+    var showDialog by remember { mutableStateOf(false) }
+    if (showDialog) {
+        AddHabitDialog(
+            onDismiss = { showDialog = false },
+            onConfirm = { habit ->
+                viewModel.addHabit(habit)
+            }
+        )
+    }
+
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            AppDrawer(
+                onNavigate = { route -> navController.navigate(route) },
+                onCloseDrawer = { scope.launch { drawerState.close() } }
             )
         }
-    ) { paddingValues ->
-
-        Text(
-            text = "Bem-vindo à Home!",
-            modifier = Modifier.padding(paddingValues)
-        )
+    ) {
+        Scaffold(
+            topBar = {
+                AppHeader (
+                    title = "Meus Hábitos",
+                    onMenuClick = { scope.launch { drawerState.open() } },
+                    onNotificationClick = { scope.launch { drawerState.open() } }
+                )
+            },
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = { showDialog = true },
+                    containerColor = colorResource(id = R.color.green_primary)
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Novo hábito")
+                }
+            }
+        ) { padding ->
+            Column(
+                modifier = Modifier
+                    .padding(padding)
+                    .padding(16.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Hoje",
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                    Text(
+                        text = "10/09/2025",
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                }
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    when (uiState) {
+                        is HabitState.Loading -> CircularProgressIndicator()
+                        is HabitState.Empty -> Text("Nenhum hábito encontrado")
+                        is HabitState.Error -> Text("Erro: ${uiState.message}", color = MaterialTheme.colorScheme.error)
+                        is HabitState.Success -> {
+                            val habits = uiState.habits
+                            HabitSection("Em breve", habits.filter { it.status == HabitStatus.UPCOMING })
+                            Spacer(Modifier.height(16.dp))
+                            HabitSection("Pendentes", habits.filter { it.status == HabitStatus.PENDING })
+                            Spacer(Modifier.height(16.dp))
+                            HabitSection("Concluídos", habits.filter { it.status == HabitStatus.COMPLETED })
+                        }
+                    }
+                }
+            }
+        }
     }
 }

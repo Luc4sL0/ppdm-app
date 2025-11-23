@@ -36,7 +36,7 @@ fun AppNavGraph() {
         }
 
         composable(Routes.HOME) {
-            HomeScreen()
+            HomeScreen(navController)
         }
     }
 }
